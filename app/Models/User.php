@@ -14,6 +14,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     
     /** Hola Muchachos*/
+    /** universidad mariana*/
     use HasFactory, Notifiable;
 
     /**
