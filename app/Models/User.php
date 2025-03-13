@@ -12,6 +12,8 @@ use Illuminate\Auth\MusterVerifyEmail as MusterVerifyEmailTrait;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
+    
+    /** Hola Muchachos*/
     use HasFactory, Notifiable;
 
     /**
