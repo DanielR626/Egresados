@@ -14,11 +14,34 @@ interface User {
     created_at: string;
 }
 
+// Definir tipos específicos para los enlaces y metadatos de paginación
+interface PaginationLinks {
+    first: string | null;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+}
+
+interface PaginationMeta {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+}
+
 // Definir la interfaz para el objeto paginado de usuarios
 interface UsersPaginated {
     data: User[];
-    links: any;
-    meta: any;
+    links: PaginationLinks;
+    meta: PaginationMeta;
 }
 
 // Definir la interfaz para las props de la página
