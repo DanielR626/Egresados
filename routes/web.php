@@ -14,11 +14,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-// Rutas para usuarios
-Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-Route::post('/users', [UsersController::class, 'store'])->name('users.store');
-Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
-
+Route::get('/users',[UsersController::class,'index'])->name('users.index');
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
