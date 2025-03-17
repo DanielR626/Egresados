@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -34,11 +34,34 @@ interface User {
   created_at: string;
 }
 
+// Definir tipos específicos para los enlaces y metadatos de paginación
+interface PaginationLinks {
+  first: string | null;
+  last: string | null;
+  prev: string | null;
+  next: string | null;
+}
+
+interface PaginationMeta {
+  current_page: number;
+  from: number;
+  last_page: number;
+  links: Array<{
+    url: string | null;
+    label: string;
+    active: boolean;
+  }>;
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+}
+
 // Definir la interfaz para la prop users que será un objeto paginado
 interface UsersPaginated {
   data: User[];
-  links: any;
-  meta: any;
+  links: PaginationLinks;
+  meta: PaginationMeta;
 }
 
 // Tipo para las alertas
@@ -80,7 +103,8 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
     setOpenEditModal(true);
   };
 
-  const handleDelete = (userId: number) => {
+  // Usando useCallback para evitar recreaciones innecesarias
+  const handleDelete = useCallback((userId: number) => {
     if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
       setLoading(true);
       router.delete(`/users/${userId}`, {
@@ -97,7 +121,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
         },
       });
     }
-  };
+  }, []);
 
   const handleCreate = () => {
     setOpenCreateModal(true);
@@ -173,7 +197,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
         ),
       },
     ],
-    []
+    [handleDelete] // Añadir handleDelete como dependencia
   );
 
   // Configurar la tabla
@@ -238,7 +262,8 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
     }
   };
 
-  const { icon, backgroundColor, borderColor, pulseColor, emoji, gradient } = getAlertIconAndColor(alert.severity);
+  const { icon, borderColor, emoji, gradient } = getAlertIconAndColor(alert.severity);
+  // Nota: backgroundColor y pulseColor se han eliminado de la desestructuración ya que no se usan
 
   // Función para obtener título según la severidad
   const getAlertTitle = (severity: 'success' | 'info' | 'warning' | 'error') => {
