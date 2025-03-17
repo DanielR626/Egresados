@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Schema;
 
 class UsersController extends Controller
 {
-    public function index():Response
+    public function index(): Response
     {
-        $users = User::select('id','name','email','created_at')->latest()->paginate(10);
-        return Inertia::render('users',[
+        $users = User::select('id', 'name', 'email', 'created_at')->latest()->paginate(10);
+        return Inertia::render('users', [
             'users' => $users,
         ]);
     }
