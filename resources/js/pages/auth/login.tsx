@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
+// Definición de tipos para el formulario de inicio de sesión
 type LoginForm = {
     email: string;
     password: string;
@@ -36,75 +37,96 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
-
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+        <>
+            <Head title="Inicio de Sesión" />
+            <div className="bg-blue-100 flex items-center justify-center min-h-screen">
+                <div className="bg-white rounded-lg shadow-lg flex max-w-4xl w-full">
+                    {/* Imagen en el lado izquierdo */}
+                    <div className="hidden md:flex md:w-1/2 bg-blue-200 rounded-l-lg items-center justify-center p-8">
+                        <img 
+                            src="https://www.umariana.edu.co/images2023/programas/fisioterapia/img-7.jpg"
+                            alt="Ilustración de fisioterapia"
+                            className="w-full h-auto"
                         />
-                        <InputError message={errors.email} />
                     </div>
 
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                    {/* Formulario de inicio de sesión */}
+                    <div className="w-full md:w-1/2 p-8">
+                        <h2 className="text-2xl font-bold text-blue-700 mb-4">Inicio de Sesión</h2>
+                        <p className="text-gray-600 mb-6">Ingresa tus datos para iniciar sesión en tu cuenta</p>
+
+                        <form className="space-y-4" onSubmit={submit}>
+                            {/* Campo de correo */}
+                            <div>
+                                <Label htmlFor="email" className="text-gray-700">Correo Electrónico</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    required
+                                    autoFocus
+                                    tabIndex={1}
+                                    autoComplete="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    placeholder="email@example.com"
+                                    className="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 rounded-md"
+                                />
+                                <InputError message={errors.email} />
+                            </div>
+
+                            {/* Campo de contraseña */}
+                            <div>
+                                <Label htmlFor="password" className="text-gray-700">Contraseña</Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    required
+                                    tabIndex={2}
+                                    autoComplete="current-password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    placeholder="********"
+                                    className="border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 rounded-md"
+                                />
+                                <InputError message={errors.password} />
+                            </div>
+
+                            {/* Recordarme */}
+                            <div className="flex items-center space-x-3">
+                                <Checkbox
+                                    id="remember"
+                                    name="remember"
+                                    checked={data.remember}
+                                    onClick={() => setData('remember', !data.remember)}
+                                    tabIndex={3}
+                                />
+                                <Label htmlFor="remember" className="text-gray-700">Recuérdame</Label>
+                            </div>
+
+                            {/* Enlace para recuperar contraseña */}
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
-                                </TextLink>
+                                <div className="text-right">
+                                    <TextLink href={route('password.request')} className="text-blue-500 text-sm">¿Tienes problemas para iniciar sesión?</TextLink>
+                                </div>
                             )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
+
+                            {/* Botón de inicio de sesión */}
+                            <div>
+                                <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-lg" tabIndex={4} disabled={processing}>
+                                    {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />} Iniciar Sesión
+                                </Button>
+                            </div>
+
+                            {/* Enlace de registro */}
+                            <div className="text-center">
+                                <span className="text-gray-500">
+                                    ¿No tienes una cuenta? <TextLink href={route('register')} className="text-blue-500">Regístrate Ahora</TextLink>
+                                </span>
+                            </div>
+                        </form>
                     </div>
-
-                    <div className="flex items-center space-x-3">
-                        <Checkbox
-                            id="remember"
-                            name="remember"
-                            checked={data.remember}
-                            onClick={() => setData('remember', !data.remember)}
-                            tabIndex={3}
-                        />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
                 </div>
-
-                <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
-                </div>
-            </form>
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-        </AuthLayout>
+            </div>
+        </>
     );
 }

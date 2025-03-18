@@ -11,6 +11,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+
+
 class UsersController extends Controller
 {
     public function index():Response
@@ -128,4 +130,6 @@ class UsersController extends Controller
             \Log::error('Error al reordenar IDs de usuarios: ' . $e->getMessage());
         }
     }
+
+
 }
