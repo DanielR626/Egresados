@@ -16,6 +16,7 @@ type LoginForm = {
     remember: boolean;
 };
 
+
 interface LoginProps {
     status?: string;
     canResetPassword: boolean;
@@ -36,75 +37,86 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-            <Head title="Log in" />
-
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+        <>
+            <Head title="Inicio de Sesión" />
+            <div className="bg-blue-100 flex items-center justify-center min-h-screen">
+                <div className="bg-white rounded-lg shadow-lg flex max-w-4xl w-full">
+                    {/* Imagen en el lado izquierdo */}
+                    <div className="hidden md:flex md:w-1/2 bg-blue-200 rounded-l-lg items-center justify-center p-8">
+                        <img 
+                            src="https://www.umariana.edu.co/images2023/programas/fisioterapia/img-7.jpg"
+                            alt="Ilustración de fisioterapia"
+                            className="w-full h-auto"
                         />
-                        <InputError message={errors.email} />
                     </div>
 
-                    <div className="grid gap-2">
-                        <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
+                    {/* Formulario de inicio de sesión */}
+                    <div className="w-full md:w-1/2 p-8">
+                        <h2 className="text-2xl font-bold text-blue-700 mb-4">Inicio de Sesión</h2>
+                        <p className="text-gray-600 mb-6">Ingresa tus datos para iniciar sesión en tu cuenta</p>
+
+                        <form className="space-y-4" onSubmit={submit}>
+                            {/* Campo de correo */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-user mr-2"></i>
+                                    <input 
+                                        type="email" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Ingresa tu correo"
+                                        required
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                    />
+                                </label>
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                            </div>
+
+                            {/* Campo de contraseña */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-lock mr-2"></i>
+                                    <input 
+                                        type="password" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Ingresa tu contraseña"
+                                        required
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                    />
+                                </label>
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                            </div>
+
+                            {/* Enlace para recuperar contraseña */}
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                                    Forgot password?
-                                </TextLink>
+                                <div className="text-right">
+                                    <a href={route('password.request')} className="text-blue-500 text-sm">¿Tienes problemas para iniciar sesión?</a>
+                                </div>
                             )}
-                        </div>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={2}
-                            autoComplete="current-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
+
+                            {/* Botón de inicio de sesión */}
+                            <div>
+                                <button 
+                                    type="submit" 
+                                    className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                                    disabled={processing}
+                                >
+                                    {processing ? 'Cargando...' : 'Iniciar Sesión'}
+                                </button>
+                            </div>
+
+                            {/* Enlace de registro */}
+                            <div className="text-center">
+                                <span className="text-gray-500">
+                                    ¿No tienes una cuenta? 
+                                    <a href={route('register')} className="text-blue-500"> Regístrate Ahora</a>
+                                </span>
+                            </div>
+                        </form>
                     </div>
-
-                    <div className="flex items-center space-x-3">
-                        <Checkbox
-                            id="remember"
-                            name="remember"
-                            checked={data.remember}
-                            onClick={() => setData('remember', !data.remember)}
-                            tabIndex={3}
-                        />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Log in
-                    </Button>
                 </div>
-
-                <div className="text-muted-foreground text-center text-sm">
-                    Don't have an account?{' '}
-                    <TextLink href={route('register')} tabIndex={5}>
-                        Sign up
-                    </TextLink>
-                </div>
-            </form>
-
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-        </AuthLayout>
+            </div>
+        </>
     );
 }

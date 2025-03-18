@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
+// Definición de tipos para el formulario de registro
 type RegisterForm = {
     name: string;
     email: string;
@@ -32,88 +33,111 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
-            <Head title="Register" />
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            disabled={processing}
-                            placeholder="Full name"
+        <>
+            <Head title="Registro" />
+            <div className="bg-blue-100 flex items-center justify-center min-h-screen">
+                <div className="bg-white rounded-lg shadow-lg flex max-w-4xl w-full">
+                    {/* Imagen en el lado izquierdo */}
+                    <div className="hidden md:flex md:w-1/2 bg-blue-200 rounded-l-lg items-center justify-center p-8">
+                        <img 
+                            src="https://www.umariana.edu.co/images2023/programas/fisioterapia/img-7.jpg"
+                            alt="Ilustración de fisioterapia"
+                            className="w-full h-auto"
                         />
-                        <InputError message={errors.name} className="mt-2" />
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            tabIndex={2}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            disabled={processing}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
+                    {/* Formulario de registro */}
+                    <div className="w-full md:w-1/2 p-8">
+                        <h2 className="text-2xl font-bold text-blue-700 mb-4">Registro</h2>
+                        <p className="text-gray-600 mb-6">Ingresa tus datos para crear una cuenta</p>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={3}
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            disabled={processing}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
+                        <form className="space-y-4" onSubmit={submit}>
+                            {/* Campo de nombre */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-user mr-2"></i>
+                                    <input 
+                                        type="text" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Nombre completo"
+                                        required
+                                        value={data.name}
+                                        onChange={(e) => setData('name', e.target.value)}
+                                    />
+                                </label>
+                                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                            </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            required
-                            tabIndex={4}
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
-                            disabled={processing}
-                            placeholder="Confirm password"
-                        />
-                        <InputError message={errors.password_confirmation} />
-                    </div>
+                            {/* Campo de correo */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-envelope mr-2"></i>
+                                    <input 
+                                        type="email" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Correo electrónico"
+                                        required
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                    />
+                                </label>
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                            </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
-                    </Button>
+                            {/* Campo de contraseña */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-lock mr-2"></i>
+                                    <input 
+                                        type="password" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Contraseña"
+                                        required
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                    />
+                                </label>
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                            </div>
+
+                            {/* Confirmación de contraseña */}
+                            <div>
+                                <label className="block text-gray-700">
+                                    <i className="fas fa-lock mr-2"></i>
+                                    <input 
+                                        type="password" 
+                                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                        placeholder="Confirmar contraseña"
+                                        required
+                                        value={data.password_confirmation}
+                                        onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    />
+                                </label>
+                                {errors.password_confirmation && <p className="text-red-500 text-sm">{errors.password_confirmation}</p>}
+                            </div>
+
+                            {/* Botón de registro */}
+                            <div>
+                                <button 
+                                    type="submit" 
+                                    className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800"
+                                    disabled={processing}
+                                >
+                                    {processing ? 'Cargando...' : 'Registrarse'}
+                                </button>
+                            </div>
+
+                            {/* Enlace de inicio de sesión */}
+                            <div className="text-center">
+                                <span className="text-gray-500">
+                                    ¿Ya tienes una cuenta? 
+                                    <a href={route('login')} className="text-blue-500"> Inicia Sesión</a>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
-                        Log in
-                    </TextLink>
-                </div>
-            </form>
-        </AuthLayout>
+            </div>
+        </>
     );
 }
