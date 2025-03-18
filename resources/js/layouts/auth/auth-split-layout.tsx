@@ -2,6 +2,7 @@ import AppLogoIcon from '@/components/app-logo-icon';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import Carrucel from '@/components/fotos';
 
 interface AuthLayoutProps {
     title?: string;
@@ -18,6 +19,7 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
                 <Link href={route('home')} className="relative z-20 flex items-center text-lg font-medium">
                     <AppLogoIcon className="mr-2 size-8 fill-current text-white" />
                 </Link>
+                 <Carrucel />
                 {quote && (
                     <div className="relative z-20 mt-auto">
                         <blockquote className="space-y-2">
