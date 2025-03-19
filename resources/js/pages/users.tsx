@@ -1,10 +1,9 @@
-import Chart from '@/components/chart';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import TableUsers from '@/components/TableUsers';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Paginas from '@/components/Paginasusers';
 
 // Definir la interfaz de usuario
 interface User {
@@ -51,7 +50,7 @@ interface UsersProps {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Users',
+        title: 'Usuarios',
         href: '/users',
     },
 ];
@@ -69,9 +68,10 @@ export default function Users({ users }: UsersProps) {
             <Head title="Users" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <ThemeProvider theme={darkTheme}>
+                    <Paginas />
                     <TableUsers users={users} />
                 </ThemeProvider>
             </div>
         </AppLayout>
-    );
+    ); 
 }
