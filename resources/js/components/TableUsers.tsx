@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -34,30 +34,21 @@ interface User {
   created_at: string;
 }
 
-// Definir tipos específicos para los enlaces y metadatos de paginación
+// Definir la interfaz para la prop users que será un objeto paginado
 interface PaginationLinks {
-  first: string | null;
-  last: string | null;
-  prev: string | null;
-  next: string | null;
+  first: string;
+  last: string;
+  prev?: string;
+  next?: string;
 }
 
 interface PaginationMeta {
   current_page: number;
-  from: number;
   last_page: number;
-  links: Array<{
-    url: string | null;
-    label: string;
-    active: boolean;
-  }>;
-  path: string;
   per_page: number;
-  to: number;
   total: number;
 }
 
-// Definir la interfaz para la prop users que será un objeto paginado
 interface UsersPaginated {
   data: User[];
   links: PaginationLinks;
@@ -103,8 +94,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
     setOpenEditModal(true);
   };
 
-  // Usando useCallback para evitar recreaciones innecesarias
-  const handleDelete = useCallback((userId: number) => {
+  const handleDelete = (userId: number) => {
     if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
       setLoading(true);
       router.delete(`/users/${userId}`, {
@@ -121,7 +111,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
         },
       });
     }
-  }, []);
+  };
 
   const handleCreate = () => {
     setOpenCreateModal(true);
@@ -197,7 +187,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
         ),
       },
     ],
-    [handleDelete] // Añadir handleDelete como dependencia
+    [handleDelete]
   );
 
   // Configurar la tabla
@@ -225,27 +215,21 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
       case 'success':
         return {
           icon: <CheckCircleIcon fontSize="large" />,
-          backgroundColor: 'rgba(46, 125, 50, 0.95)',
           borderColor: '#1b5e20',
-          pulseColor: 'rgba(76, 175, 80, 0.6)',
           emoji: '✅',
           gradient: 'linear-gradient(135deg, #2e7d32 0%, #81c784 100%)'
         };
       case 'error':
         return {
           icon: <ErrorIcon fontSize="large" />,
-          backgroundColor: 'rgba(211, 47, 47, 0.95)',
           borderColor: '#b71c1c',
-          pulseColor: 'rgba(244, 67, 54, 0.6)',
           emoji: '❌',
           gradient: 'linear-gradient(135deg, #d32f2f 0%, #ef5350 100%)'
         };
       case 'warning':
         return {
           icon: <WarningIcon fontSize="large" />,
-          backgroundColor: 'rgba(237, 108, 2, 0.95)',
           borderColor: '#e65100',
-          pulseColor: 'rgba(255, 152, 0, 0.6)',
           emoji: '⚠️',
           gradient: 'linear-gradient(135deg, #ed6c02 0%, #ffb74d 100%)'
         };
@@ -253,9 +237,7 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
       default:
         return {
           icon: <InfoIcon fontSize="large" />,
-          backgroundColor: 'rgba(2, 136, 209, 0.95)',
           borderColor: '#01579b',
-          pulseColor: 'rgba(33, 150, 243, 0.6)',
           emoji: 'ℹ️',
           gradient: 'linear-gradient(135deg, #0288d1 0%, #4fc3f7 100%)'
         };
@@ -263,7 +245,6 @@ const TableUsers = ({ users }: { users: UsersPaginated }) => {
   };
 
   const { icon, borderColor, emoji, gradient } = getAlertIconAndColor(alert.severity);
-  // Nota: backgroundColor y pulseColor se han eliminado de la desestructuración ya que no se usan
 
   // Función para obtener título según la severidad
   const getAlertTitle = (severity: 'success' | 'info' | 'warning' | 'error') => {
